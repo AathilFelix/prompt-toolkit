@@ -1,4 +1,4 @@
-name: Build and Release
+name: Build Release
 
 on:
   push:
@@ -6,41 +6,19 @@ on:
       - 'v*'
 
 jobs:
-  build:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        include:
-          - os: windows-latest
-            name: windows
-            ext: .exe
-          - os: macos-latest  
-            name: macos
-            ext: ''
-          - os: ubuntu-latest
-            name: linux
-            ext: ''
-    
+  build-windows:
+    runs-on: windows-latest
     steps:
     - uses: actions/checkout@v3
-    
-    - name: Set up Python
-      uses: actions/setup-python@v4
+    - uses: actions/setup-python@v4
       with:
         python-version: '3.9'
-    
-    - name: Install dependencies
+    - name: Install and build
       run: |
         pip install -r requirements.txt
         pip install pyinstaller
-    
-    - name: Build executable
-      run: |
-        pyinstaller --onefile --console --name prompt-toolkit-${{ matrix.name }} src/cli.py
-    
-    - name: Upload to Release
+        pyinstaller --onefile --console --name prompt-toolkit src/cli.py
+    - name: Upload Release
       uses: softprops/action-gh-release@v1
       with:
-        files: dist/prompt-toolkit-${{ matrix.name }}${{ matrix.ext }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        files: dist/prompt-toolkit.exe
