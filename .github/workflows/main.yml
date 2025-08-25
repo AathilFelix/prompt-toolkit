@@ -1,16 +1,21 @@
 name: Build Multi-Platform
 
 on:
-  workflow_dispatch:  # This allows manual running
+  workflow_dispatch:
   push:
     tags:
       - 'v*'
-  release:
-    types: [created, published]
+
+permissions:
+  contents: write
+  id-token: write  # Add this line
 
 jobs:
   build:
     runs-on: ${{ matrix.os }}
+    permissions:  # Add job-level permissions too
+      contents: write
+      id-token: write
     strategy:
       matrix:
         include:
@@ -38,4 +43,6 @@ jobs:
       uses: softprops/action-gh-release@v1
       with:
         files: dist/prompt-toolkit-${{ matrix.name }}${{ matrix.ext }}
-        tag_name: v1.0.0  # Specify the release to attach to
+        tag_name: v1.0.0
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
