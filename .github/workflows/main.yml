@@ -1,8 +1,12 @@
 name: Build Multi-Platform
 
 on:
+  workflow_dispatch:  # This allows manual running
+  push:
+    tags:
+      - 'v*'
   release:
-    types: [created]
+    types: [created, published]
 
 jobs:
   build:
@@ -25,16 +29,13 @@ jobs:
     - uses: actions/setup-python@v4
       with:
         python-version: '3.9'
-        
-    - name: Install deps
+    - name: Install and build
       run: |
         pip install -r requirements.txt
         pip install pyinstaller
-        
-    - name: Build
-      run: pyinstaller --onefile --console --name prompt-toolkit-${{ matrix.name }} src/cli.py
-      
-    - name: Upload
+        pyinstaller --onefile --console --name prompt-toolkit-${{ matrix.name }} src/cli.py
+    - name: Upload to Release
       uses: softprops/action-gh-release@v1
       with:
         files: dist/prompt-toolkit-${{ matrix.name }}${{ matrix.ext }}
+        tag_name: v1.0.0  # Specify the release to attach to
