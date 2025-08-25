@@ -93,9 +93,12 @@ prompt-toolkit-<os> improve summarize "I want to learn AI" -a
 prompt-toolkit-<os> improve study plan "machine learning basics"
 ```
 
+## **DEMO**
+https://github.com/user-attachments/assets/87098b13-734e-4cd0-8eb5-a079ca501975
+
 ## **Technical Details**
 - Python 3.7+
-
+  
 - CLI Framework: Typer + Rich
 
 - AI Integration: Hack Club AI (free tier, no API key required)
