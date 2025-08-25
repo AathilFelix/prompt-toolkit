@@ -65,13 +65,13 @@ python src/cli.py improve summarize "I want to learn AI"
 ```
 ### **Generate an Optimized Prompt (Prompt Engineering Mode)**
 ```bash
-prompt-toolkit improve <intent> <prompt-to-refine>
+prompt-toolkit-<os> improve <intent> <prompt-to-refine>
 ```
 
 ### **Usage Example**
 
 ```bash
-prompt-toolkit improve summarize "I want to learn AI"
+prompt-toolkit-<os> improve summarize "I want to learn AI"
 ```
 #### **Output**
 ```bash
@@ -80,17 +80,17 @@ Engineered Prompt:
 ```
 ### **Run AI Response**
 ```bash
-prompt-toolkit improve summarize "I want to learn AI" --ai
+prompt-toolkit-<os> improve summarize "I want to learn AI" --ai
 ```
 <div style="text-align:center;">(OR)</div>
 
 ```bash
-prompt-toolkit improve summarize "I want to learn AI" -a
+prompt-toolkit-<os> improve summarize "I want to learn AI" -a
 ```
 
 ### **Custom Intents**
 ```bash
-prompt-toolkit improve study plan "machine learning basics"
+prompt-toolkit-<os> improve study plan "machine learning basics"
 ```
 
 ## **Technical Details**
