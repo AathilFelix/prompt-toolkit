@@ -1,24 +1,40 @@
-name: Build Release
+name: Build Multi-Platform
 
 on:
-  push:
-    tags:
-      - 'v*'
+  release:
+    types: [created]
 
 jobs:
-  build-windows:
-    runs-on: windows-latest
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: windows-latest
+            name: windows
+            ext: .exe
+          - os: macos-latest  
+            name: macos
+            ext: ''
+          - os: ubuntu-latest
+            name: linux
+            ext: ''
+    
     steps:
     - uses: actions/checkout@v3
     - uses: actions/setup-python@v4
       with:
         python-version: '3.9'
-    - name: Install and build
+        
+    - name: Install deps
       run: |
         pip install -r requirements.txt
         pip install pyinstaller
-        pyinstaller --onefile --console --name prompt-toolkit src/cli.py
-    - name: Upload Release
+        
+    - name: Build
+      run: pyinstaller --onefile --console --name prompt-toolkit-${{ matrix.name }} src/cli.py
+      
+    - name: Upload
       uses: softprops/action-gh-release@v1
       with:
-        files: dist/prompt-toolkit.exe
+        files: dist/prompt-toolkit-${{ matrix.name }}${{ matrix.ext }}
