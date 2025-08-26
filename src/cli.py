@@ -5,14 +5,14 @@ from hackclub_ai import ask_hackclub, generate_better_prompt
 from typing import List
 
 console = Console()
-app = typer.Typer()
+app = typer.Typer(add_completion=False,help="🧠 AI Prompt Engineering Toolkit - Transform bad prompts into expert-level ones. To get help on certain commands type: ./prompt-toolkit-<os> COMMAND --help")
 
 @app.command()
 def improve(
-    intent: str,
-    text: List[str] = typer.Argument(...),
+    intent: str = typer.Argument(..., help="Intent for prompt optimization (e.g., summarize, rewrite, explain)"),
+    text: List[str] = typer.Argument(..., help="Text to create optimized prompt for"),
     show_prompt: bool = typer.Option(True, "--show-prompt/--hide-prompt", help="Show the generated prompt"),
-    get_response: bool = typer.Option(False, "--ai", "-a", help="Get AI response too")
+    ai: bool = typer.Option(False, "--ai", "-a", help="Get AI response using HackClub AI service")
 ):
     """Generate an optimized prompt using AI, then optionally get the response."""
     
@@ -30,7 +30,7 @@ def improve(
             border_style="yellow"
         ))
     
-    if get_response:
+    if ai:
         console.print("\n[blue]🤖 Getting AI response with optimized prompt...[/blue]")
         response = ask_hackclub(engineered_prompt)
         console.print("\n")
